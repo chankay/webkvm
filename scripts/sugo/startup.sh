@@ -23,10 +23,19 @@ if [ -z "$PASSWD" ];then
 	exit 1
 fi
 
+# Get authcode
+AUTHCODE=$(curl -s -k "https://${HOST}/api/gettoken" | jq -r '.authcode')
+if [ -z "$AUTHCODE" ];then
+	echo "failed to get authcode: https://${HOST}"
+	exit 1
+fi
+AUTHCODE=`node /sugo/encrypt.js ${AUTHCODE} | xargs`
+
+
 # Login to BMC WEB Server to Get JNLP 
 
 GET_COOKIEURL="https://${HOST}/api/secure_session"
-PAYLOAD="username=${USER}&password=${PASSWD}"
+PAYLOAD="username=${USER}&password=${PASSWD}&authcode=${AUTHCODE}"
 
 GET_COOKIE=`curl -i -k -X POST -d "${PAYLOAD}" "${GET_COOKIEURL}"`
 
