@@ -6,7 +6,7 @@ if [ -z $VENDOR ];then
   # shellcheck disable=SC1073
   echo "NO VENDOR Provided"
   echo "possible Vendor is :"
-  echo "Inspur,DELL,H3C,Supermicro,Suma"
+  echo "Inspur,DELL,H3C,Supermicro,Suma,Lenovo"
   exit 1
 fi
 

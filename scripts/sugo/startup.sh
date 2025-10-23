@@ -52,7 +52,7 @@ if [ -z $SESSION ];then
 	exit 1
 fi
 
-wget -O /app/jviewer.jnlp --no-check-certificate --header="Cookie:$SESSION" --header="X-CSRFTOKEN:$CSRF" "https://${HOST}/api/kvmjnlp?&JNLPSTR=JViewer&locale=root"
+wget -O /app/jviewer.jnlp --no-check-certificate --header="Cookie:lang=zh-cn;$SESSION" --header="X-CSRFTOKEN:$CSRF" "https://${HOST}/api/kvmjnlp?&JNLPSTR=JViewer&locale=root"
 
 if [ -f /app/jviewer.jnlp ];then
 	chmod +x /app/jviewer.jnlp
