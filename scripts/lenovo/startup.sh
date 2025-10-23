@@ -5,7 +5,7 @@
 HOST=${HOST}
 USER=${USER}
 PASSWD=${PASSWD}
-export DISPLAY_WIDTH=1280
+export DISPLAY_WIDTH=1024
 export DISPLAY_HEIGHT=768
  
 if [ -z "$HOST" ];then
@@ -61,7 +61,7 @@ run_sr650(){
 
 run_sr660v2(){
         # 登录获取返回
-        GET_COOKIE=$(curl -s -k -i -X POST -d "username=${USER}&password=${PASS}" "https://${HOST}/api/session")
+        GET_COOKIE=$(curl -s -k -i -X POST -d "username=${USER}&password=${PASSWD}" "https://${HOST}/api/session")
         echo $GET_COOKIE
 
         # 提取 QSESSIONID（从 Set-Cookie 中）
@@ -70,12 +70,13 @@ run_sr660v2(){
         # 提取 JSON 主体部分（{ 开始到 } 结束）
         BODY=$(echo "$GET_COOKIE" | sed -n '/^{/,/}$/p')
 
+        echo $BODY
         # 提取 CSRFToken
         CSRFTOKEN=$(echo "$BODY" | grep -o '"CSRFToken"[^,}]*' | awk -F'"' '{print $4}')
 
         echo "Session ID: $SESSION"
         echo "CSRF Token: $CSRFTOKEN"
-        COOKIE_DATA="Cookie:lang=zh-cn;$SESSION"
+        COOKIE_DATA="Cookie:lang=en;$SESSION"
         echo $COOKIE_DATA
 
         wget -O /app/jviewer.jnlp --no-check-certificate --header="${COOKIE_DATA}" --header="X-CSRFTOKEN:${CSRFTOKEN}" "https://${HOST}/api/remote_control/get/kvm/launch"
